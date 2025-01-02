@@ -119,7 +119,8 @@ APPEND_SLASH = True
 
 STATIC_URL = "static/"
 # settings.py
-LOGIN_REDIRECT_URL = '/'  # Redirect to the home page or another page after login
+LOGIN_REDIRECT_URL = '/habits/'  # Redirect to the home page or another page after login
+LOGOUT_REDIRECT_URL = '/login/'  # Or any other page
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

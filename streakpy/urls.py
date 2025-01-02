@@ -8,7 +8,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('register/', view.register_view, name='register'),
 path('habits/', view.habit_list, name='habit_list'),
-
+path('logout/', view.logout_view, name='logout'),
 path('add-habit/', view.add_habit, name='add_habit'),
     path('complete-habit/<int:habit_id>/', view.complete_habit, name='complete_habit'),
     path('delete-habit/<int:habit_id>/', view.delete_habit, name='delete_habit'),

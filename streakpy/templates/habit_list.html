@@ -109,8 +109,10 @@
     <div class="habit-list">
         {% for habit in habits %}
             <div class="habit-item" id="habit-{{ habit.id }}">
+                <a href="{% url 'habit_detail' habit.id %}">
                 <span>{{ habit.name }}</span>
-                <button onclick="completeHabit({{ habit.id }})">Complete Today</button>
+                </a>
+                <button onclick="completeHabit({{ habit.id }})">Done !</button>
                 <button onclick="deleteHabit({{ habit.id }})">Delete</button>
             </div>
         {% empty %}

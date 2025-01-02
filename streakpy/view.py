@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login ,logout
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.timezone import now
@@ -55,9 +55,10 @@ def habit_list(request):
     streak_days = [today - timedelta(days=i) for i in range(10)]
     # Check if the habit was completed on each of the last 10 days
     completed_streaks = []
-    for day in streak_days:
-        if HabitCompletion.objects.filter(habit=habits, completed_at=day).exists():
-            completed_streaks.append(day)
+    for habit in habits:
+        for day in streak_days:
+            if HabitCompletion.objects.filter(habit=habit, completed_at=day).exists():
+                completed_streaks.append(day)
 
     if request.method == 'POST':
         form = HabitForm(request.POST)
@@ -119,18 +120,15 @@ def delete_habit(request, habit_id):
     return JsonResponse({"success": False, "error": "Invalid request"})
 @login_required
 def habit_detail(request, habit_id):
-    habit = Habit.objects.get(id=habit_id, user=request.user)
-    today = now().date()
+    habit = get_object_or_404(Habit, id=habit_id, user=request.user)
+    streak = habit.calculate_streak()
+    last_10_days = habit.get_last_10_days()
 
-    # Get the last 10 days
-    streak_days = [today - timedelta(days=i) for i in range(10)]
-    completions = HabitCompletion.objects.filter(habit=habit, completed_at__in=streak_days).order_by('completed_at')
-
-    # Mark completed streaks
-    completed_streaks = {completion.completed_at for completion in completions}
-
-    return render(request, 'habit_detail.html', {
+    return render(request, 'streakpy/habit_detail.html', {
         'habit': habit,
-        'streak_days': streak_days,
-        'completed_streaks': completed_streaks,
+        'streak': streak,
+        'last_10_days': last_10_days
     })
+def logout_view(request):
+    logout(request)  # Log the user out
+    return redirect('login')
