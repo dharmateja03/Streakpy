@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streakify - Your Habits</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .header {
+            background: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .habit-list {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .habit-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .delete-btn, .complete-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-btn {
+            background: #ff4444;
+        }
+        .add-form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button[type="submit"] {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .streak {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.streak-day {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ddd;
+  text-align: center;
+  line-height: 40px;
+  font-size: 14px;
+}
+
+.streak-day {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: lightgray;
+  margin: 5px;
+  font-size: 14px;
+}
+
+.streak-day.completed {
+  background-color: green;
+  color: white;
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Your Habits</h2>
+    </div>
+
+    <div class="habit-list">
+        {% for habit in habits %}
+            <div class="habit-item" id="habit-{{ habit.id }}">
+                <span>{{ habit.name }}</span>
+                <button onclick="completeHabit({{ habit.id }})">Complete Today</button>
+                <button onclick="deleteHabit({{ habit.id }})">Delete</button>
+            </div>
+        {% empty %}
+            <p>No habits yet! Add some below.</p>
+        {% endfor %}
+    </div>
+
+    <div class="add-form">
+        <input type="text" id="new-habit" placeholder="New habit name">
+        <button onclick="addHabit()">Add Habit</button>
+    </div>
+
+    <script>
+        // Function to mark a habit as completed today
+        function completeHabit(habitId) {
+            fetch(`/complete-habit/${habitId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',  // Ensure CSRF token is passed
+                },
+                body: new URLSearchParams({
+                    'habit_id': habitId,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Habit completed for today!');
+                    location.reload();  // Reload to reflect the updated habit status
+                } else {
+                    alert(data.error || 'An error occurred');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Function to delete a habit
+        function deleteHabit(habitId) {
+            fetch(`/delete-habit/${habitId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: new URLSearchParams({
+                    'habit_id': habitId,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById(`habit-${habitId}`).remove();
+                    alert('Habit deleted');
+                } else {
+                    alert(data.error || 'An error occurred');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Function to add a new habit
+        function addHabit() {
+            const habitName = document.getElementById('new-habit').value;
+            if (habitName.trim()) {
+                fetch('/add-habit/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body: new URLSearchParams({
+                        'name': habitName,
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Habit added!');
+                        location.reload();  // Reload to reflect the new habit
+                    } else {
+                        alert(data.error || 'An error occurred');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            } else {
+                alert('Please enter a habit name.');
+            }
+        }
+    </script>
+
+</body>
+
+</html>
