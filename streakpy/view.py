@@ -25,7 +25,7 @@ def register_view(request):
     else:
         form = CustomUserCreationForm()
 
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'registration/signup.html', {'form': form})
 
 
 # Login view
@@ -131,4 +131,4 @@ def habit_detail(request, habit_id):
     })
 def logout_view(request):
     logout(request)  # Log the user out
-    return redirect('login')
+    return redirect('home')

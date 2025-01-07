@@ -23,7 +23,7 @@ class Habit(models.Model):
         if not completions:
             return 0
 
-        streak = 1
+        streak = 0
         latest = completions[0].completed_at
 
         for completion in completions:
