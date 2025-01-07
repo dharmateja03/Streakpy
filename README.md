@@ -109,8 +109,5 @@ This project is licensed under the MIT License.
 
 Made by Dharma Teja 
 
-Follow these steps to set up and run the project on your local machine.
 
-1. **Clone the repository**:
-   ```bash
   
