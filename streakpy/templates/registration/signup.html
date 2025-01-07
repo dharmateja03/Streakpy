@@ -1,17 +1,16 @@
-<!-- streakpy/templates/login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Register</title>
     <style>
         :root {
             --primary-color: #4CAF50;
             --secondary-color: #f8f9fa;
             --text-color: #333;
-            --border-color: #dee2e6;
             --error-color: #e74c3c;
+            --border-color: #dee2e6;
         }
 
         * {
@@ -23,7 +22,6 @@
 
         body {
             background-color: var(--secondary-color);
-            color: var(--text-color);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -31,19 +29,19 @@
             padding: 1rem;
         }
 
-        .login-container {
+        .register-container {
             background-color: white;
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 400px;
+            max-width: 500px;
             text-align: center;
         }
 
         h2 {
             color: var(--primary-color);
-            font-size: 1.8rem;
+            font-size: 2rem;
             margin-bottom: 1rem;
         }
 
@@ -60,6 +58,7 @@
         }
 
         input[type="text"],
+        input[type="email"],
         input[type="password"] {
             width: 100%;
             padding: 0.8rem;
@@ -90,14 +89,24 @@
             font-size: 0.9rem;
         }
 
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 600px) {
-            .login-container {
+            .register-container {
                 padding: 1.5rem;
             }
 
             h2 {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
             }
 
             input,
@@ -108,20 +117,36 @@
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
+    <div class="register-container">
+        <h2>Register</h2>
         <form method="post">
             {% csrf_token %}
             <label for="username">Username:</label>
-            <input type="text" name="username" required>
-            <label for="password">Password:</label>
-            <input type="password" name="password" required>
-            <button type="submit">Login</button>
+            <input type="text" name="username" id="username" placeholder="Enter username" required>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" placeholder="Enter email address" required>
+
+            <label for="first_name">First Name:</label>
+            <input type="text" name="first_name" id="first_name" placeholder="Enter first name">
+
+            <label for="last_name">Last Name:</label>
+            <input type="text" name="last_name" id="last_name" placeholder="Enter last name">
+
+            <label for="password1">Password:</label>
+            <input type="password" name="password1" id="password1" placeholder="Enter password" required>
+
+            <label for="password2">Confirm Password:</label>
+            <input type="password" name="password2" id="password2" placeholder="Confirm password" required>
+
+            <button type="submit">Register</button>
         </form>
 
-        {% if error %}
-            <p class="error">{{ error }}</p>
+        {% if form.errors %}
+            <p class="error">Please correct the errors below.</p>
         {% endif %}
+
+        <p>Already have an account? <a href="{% url 'login' %}">Login here</a>.</p>
     </div>
 </body>
 </html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Signup</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4caf50, #007bff);
+            color: #fff;
+        }
+        .container {
+            width: 350px;
+            padding: 25px;
+            text-align: center;
+            border-radius: 12px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .container h1 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #333;
+        }
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 12px 15px;
+            margin: 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            text-decoration: none;
+            text-align: center;
+        }
+        .btn-login {
+            background-color: #4caf50;
+            color: white;
+        }
+        .btn-login:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+        .btn-signup {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-signup:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        .btn:focus {
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome</h1>
+        <a href="/login/" class="btn btn-login">Login</a>
+        <a href="/signup/" class="btn btn-signup">Signup</a>
+    </div>
+</body>
+</html>
