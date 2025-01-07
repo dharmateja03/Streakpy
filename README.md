@@ -33,7 +33,7 @@ This is a Habit Tracker application built with Django, allowing users to create,
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/habit-tracker.git
+git clone https://github.com/dharmateja03/Streakpy.git
 cd habit-tracker
 ```
 
